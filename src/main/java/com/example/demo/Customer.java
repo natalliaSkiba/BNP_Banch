@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
-
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -34,10 +32,6 @@ public class Customer {
     @Column(name = "birth")
     private String birth;
 
-    
     @Column (name = "total_amount")
     private Double totalAmount;
-
-
-
 }
