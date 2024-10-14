@@ -1,29 +1,16 @@
 package com.example.demo;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @Slf4j
 @SpringBootApplication
-public class DemoApplication implements CommandLineRunner {
-    @Autowired
-    private Job importCustomerJob;
-    @Autowired
-    private JobLauncher jobLauncher;
-    @Value("${file.path}")
-    private String input;
-
+public class DemoApplication {
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
-
+    /*
     @Override
     public void run(String... args) throws Exception {
         log.info("Launching Job with file parameters");
@@ -37,5 +24,6 @@ public class DemoApplication implements CommandLineRunner {
             log.error("Error Launching Job: " + e.getMessage());
         }
     }
+     */
 }
 

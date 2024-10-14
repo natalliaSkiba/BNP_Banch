@@ -1,45 +1,33 @@
-package com.example.demo;
+package com.example.demo.shared;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
-
+import org.springframework.stereotype.Service;
 @Slf4j
-@RestController
-public class TestAPI {
+@Service
+public class DemoJobRunner {
     @Autowired
     private JobLauncher jobLauncher;
-    @Autowired
-    Job importCustomerJob;
 
-    @GetMapping("/hello")
-    public void Test(){
-        String uuid = UUID.randomUUID().toString();
-        JobParameters jobParameters = new JobParametersBuilder()
-                .addString("uuid",uuid)
-                .toJobParameters();
+    public void run(Job job, JobParameters jobParameters){
         try {
-            jobLauncher.run(importCustomerJob,jobParameters);
+            jobLauncher.run(job, jobParameters);
+            log.info("Job successfully completed");
         } catch (JobExecutionAlreadyRunningException e) {
-            throw new RuntimeException(e);
+            log.error("JobExecutionAlreadyRunningException",e);
         } catch (JobRestartException e) {
-            throw new RuntimeException(e);
+            log.error("JobRestartException",e);
         } catch (JobInstanceAlreadyCompleteException e) {
-            throw new RuntimeException(e);
+            log.error("JobInstanceAlreadyCompleteException",e);
         } catch (JobParametersInvalidException e) {
-            throw new RuntimeException(e);
+            log.error("RuntimeException",e);
         }
-        ;
     }
 }

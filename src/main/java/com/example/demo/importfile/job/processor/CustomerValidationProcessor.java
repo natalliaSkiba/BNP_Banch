@@ -1,5 +1,6 @@
-package com.example.demo;
+package com.example.demo.importfile.job.processor;
 
+import com.example.demo.model.Customer;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;

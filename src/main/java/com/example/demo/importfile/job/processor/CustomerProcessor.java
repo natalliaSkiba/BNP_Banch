@@ -1,5 +1,6 @@
-package com.example.demo;
+package com.example.demo.importfile.job.processor;
 
+import com.example.demo.model.Customer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
