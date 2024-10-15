@@ -1,39 +1,44 @@
 package com.example.demo.exportfile.job;
 
+import com.example.demo.exportfile.job.reader.ExportCustomerReader;
+import com.example.demo.exportfile.job.writer.ExportCustomerWriter;
+import com.example.demo.model.Customer;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @Slf4j
+@RequiredArgsConstructor
 @Configuration
 public class ExportJobDefinition {
     private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
+    private final ExportCustomerReader exportCustomerReader;
+    private final ExportCustomerWriter exportCustomerWriter;
 
-
-    public ExportJobDefinition(JobRepository jobRepository) {
-        this.jobRepository = jobRepository;
-    }
-    /*
     @Bean
-    public Job exportCustomerJob(Step step1) {
+    public Job exportCustomerJob(Step exportStep) {
         log.info("tarting Job to export customers to file");
         return new JobBuilder("exportCustomerJob", jobRepository)
-                .start(step1)
+                .start(exportStep)
                 .build();
     }
 
     @Bean
-    public Step step1(JdbcCursorItemReader<Customer> itemReader,
-                      JsonFileItemWriter<Customer> itemWriter,
-                      PlatformTransactionManager transactionManager) {
-        System.out.println("Настройка Step 1");
-        return new StepBuilder("step1", jobRepository)
+    public Step exportStep() {
+       log.info("Configuration of exportStep Export to BD");
+        return new StepBuilder("exportStep", jobRepository)
                 .<Customer, Customer>chunk(10, transactionManager)
-                .reader(itemReader)
-                .writer(itemWriter)
-                .transactionManager(new ResourcelessTransactionManager())
+                .reader(exportCustomerReader)
+                .writer(exportCustomerWriter)
+                .transactionManager(transactionManager)
                 .build();
     }
-
-     */
 }

@@ -1,6 +1,7 @@
 package com.example.demo.importfile.job;
 
 import com.example.demo.importfile.job.listener.ImportStepListener;
+import com.example.demo.importfile.job.policy.CustomerSkipPolicy;
 import com.example.demo.importfile.job.processor.CustomerProcessor;
 import com.example.demo.importfile.job.processor.CustomerValidationProcessor;
 import com.example.demo.importfile.job.reader.CustomerReader;
@@ -17,7 +18,6 @@ import org.springframework.batch.item.support.CompositeItemProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
-
 import java.util.Arrays;
 
 @Slf4j
@@ -39,25 +39,24 @@ public class ImportJobDefinition {
     }
 
     @Bean
-    public Job importCustomerJob(Step step1) {
+    public Job importCustomerJob(Step importStep) {
         log.info("Lancement du job pour l'importation des clients");
         return new JobBuilder("importCustomerJob", jobRepository)
-                .start(step1)
+                .start(importStep)
                 .build();
     }
 
     @Bean
-    public Step step1() {
-        log.info("Configuration Step 1");
-        return new StepBuilder("step1", jobRepository)
+    public Step importStep() {
+        log.info("Configuration importStep");
+        return new StepBuilder("importStep", jobRepository)
                 .<Customer, Customer>chunk(10, transactionManager)
                 .listener(importStepListener)
                 .reader(customerReader)
-                //.processor(compositeItemProcessor)
+                .processor(compositeItemProcessor(null,null))
                 .writer(customerWriter)
-                //.faultTolerant()
-                //.skipPolicy(new CustomerSkipPolicy())
-                //.listener(skipListener)
+                .faultTolerant()
+                .skipPolicy(new CustomerSkipPolicy())
                 .build();
     }
 }

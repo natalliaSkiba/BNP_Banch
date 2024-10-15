@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 @Slf4j
 @Component
-public class CustomerWriter extends JdbcBatchItemWriter<Customer> {
+public class CustomerWriter extends JdbcBatchItemWriter<Customer>  {
 
     public CustomerWriter(DataSource dataSource) {
         this.setSql("INSERT INTO customer (first_name, last_name, address, birth, total_amount) VALUES (:firstName, :lastName, :address, :birth, :totalAmount)");

@@ -5,13 +5,9 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.PathResource;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +20,6 @@ public class CustomerReader extends FlatFileItemReader<Customer> implements Step
         var filePath = stepExecution.getJobExecution().getJobParameters().getString("import.file.path");
         this.setResource(new PathResource(filePath));
     }
-
     public CustomerReader() {
         this.setName("customerReader");
         this.setLineMapper(lineMapper());
@@ -44,22 +39,4 @@ public class CustomerReader extends FlatFileItemReader<Customer> implements Step
         defaultlineMapper.setFieldSetMapper(customerBeanWrapperFieldSetMapper);
         return defaultlineMapper;
     }
- /*
-    @Bean
-    public FlatFileItemReader<Customer> itemReader() {
-        System.out.println("Начинаю чтение файла: " + filePath);
-        return
-                new FlatFileItemReaderBuilder<Customer>()
-                        .name("customerReader")
-                        .resource(new FileSystemResource(filePath))
-                        .delimited()
-                        .names("firstName", "lastName", "address", "birth", "totalAmount")
-                        .fieldSetMapper(new BeanWrapperFieldSetMapper<Customer>() {{
-                            setTargetType(Customer.class);
-                            setStrict(true);
-                        }})
-                        .build();
-    }
-
-  */
 }

@@ -1,4 +1,4 @@
-package com.example.demo.importfile.job;
+package com.example.demo.exportfile.job;
 
 import com.example.demo.shared.DemoJobRunner;
 import lombok.extern.slf4j.Slf4j;
@@ -9,24 +9,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
-
 @Slf4j
 @Component
-public class ImportJobFactory {
+public class ExportJobFactory {
     @Autowired
     private DemoJobRunner demoJobRunner;
     @Autowired
-    Job importCustomerJob;
+    Job exportCustomerJob;
 
     public void execute(String filePosition) {
         String uuid = UUID.randomUUID().toString();
 
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("uuid", uuid)
-                .addString("import.file.path", filePosition)
+                .addString("export.file.path", filePosition)
                 .toJobParameters();
-        log.info("*".repeat(15) + "Import Started" + "*".repeat(15));
-        demoJobRunner.run(importCustomerJob, jobParameters);
-        log.info("*".repeat(15) + "Import Finished" + "*".repeat(15));
+        log.info("*".repeat(15) + "Export Started" + "*".repeat(15));
+        demoJobRunner.run(exportCustomerJob, jobParameters);
+        log.info("Job parameters: {}", jobParameters);
+        log.info("*".repeat(15) + "Export Finished" + "*".repeat(15));
     }
 }
